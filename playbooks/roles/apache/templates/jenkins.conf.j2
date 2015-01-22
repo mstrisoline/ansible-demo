@@ -1,0 +1,14 @@
+<VirtualHost {{ansible_default_ipv4['address']}}:80>
+    ServerName {{inventory_hostname}}
+    Redirect permanent / /jenkins/
+    ProxyRequests Off
+    ProxyPreserveHost On
+    AllowEncodedSlashes On
+    ProxyPass /jenkins ajp://localhost:8009/jenkins nocanon
+    ProxyPassReverse /jenkins ajp://localhost:8009/jenkins
+    <Proxy ajp://localhost:8009/*>
+        Order allow,deny
+        Allow from all
+    </Proxy>
+    ProxyPreserveHost On
+</VirtualHost>

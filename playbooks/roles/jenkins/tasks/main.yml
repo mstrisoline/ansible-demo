@@ -1,0 +1,13 @@
+---
+- name: Make Jenkins Home
+  file: path=/opt/jenkins state=directory owner=tomcat group=tomcat
+  tags: jenkins
+
+- name: Install Latest Jenkins War to Tomcat
+  get_url: url=http://mirrors.jenkins-ci.org/war/latest/jenkins.war dest=/opt/tomcat/webapps/jenkins.war owner=tomcat group=tomcat
+  tags: jenkins
+
+- name: Tomcat setenv.sh for Jenkins
+  copy: src=jenkins_setenv.sh dest=/opt/tomcat/bin/setenv.sh mode=755 owner=tomcat group=tomcat
+  notify: restart tomcat
+  tags: jenkins

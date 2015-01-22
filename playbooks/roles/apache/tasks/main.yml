@@ -1,0 +1,13 @@
+---
+- name: Apache Packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - httpd
+    - mod_ssl
+    - mod_proxy_html
+  tags: apache
+
+- name: Copy Jenkins Conf
+  template: src=jenkins.conf.j2 dest=/etc/httpd/conf.d/jenkins.conf
+  notify: start apache
+  tags: apache
